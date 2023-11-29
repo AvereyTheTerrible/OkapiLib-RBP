@@ -25,6 +25,7 @@ class SkidSteerModel : public ChassisModel {
                  std::shared_ptr<AbstractMotor> irightSideMotor,
                  std::shared_ptr<ContinuousRotarySensor> ileftEnc,
                  std::shared_ptr<ContinuousRotarySensor> irightEnc,
+				 std::shared_ptr<DriveCurve> idriveCurve,
                  double imaxVelocity,
                  double imaxVoltage);
 
@@ -76,7 +77,10 @@ class SkidSteerModel : public ChassisModel {
    * @param irightSpeed right side speed
    * @param ithreshold deadband on joystick values
    */
-  void tank(double ileftSpeed, double irightSpeed, double ithreshold = 0) override;
+  void tank(double ileftSpeed,
+            double irightSpeed,
+            double icurveGain = 0,
+            double ithreshold = 0) override;
 
   /**
    * Drive the robot with an arcade drive layout. Uses voltage mode.
@@ -85,7 +89,11 @@ class SkidSteerModel : public ChassisModel {
    * @param iyaw speed around the vertical axis
    * @param ithreshold deadband on joystick values
    */
-  void arcade(double iforwardSpeed, double iyaw, double ithreshold = 0) override;
+  void arcade(double iforwardSpeed,
+              double iyaw,
+              double iforwardCurveGain = 0,
+              double icurveGainYaw = 3.0,
+              double ithreshold = 0) override;
 
   /**
    * Drive the robot with a curvature drive layout. The robot drives in constant radius turns
@@ -97,7 +105,11 @@ class SkidSteerModel : public ChassisModel {
    * @param icurvature curvature (inverse of radius) to drive in
    * @param ithreshold deadband on joystick values
    */
-  void curvature(double iforwardSpeed, double icurvature, double ithreshold = 0) override;
+  virtual void curvature(double iforwardSpeed,
+                         double icurvature,
+                         double iforwardCurveGain = 0,
+                         double icurvatureCurveGain = 0,
+                         double ithreshold = 0) override;
 
   /**
    * Power the left side motors. Uses velocity mode.
@@ -194,5 +206,6 @@ class SkidSteerModel : public ChassisModel {
   std::shared_ptr<AbstractMotor> rightSideMotor;
   std::shared_ptr<ContinuousRotarySensor> leftSensor;
   std::shared_ptr<ContinuousRotarySensor> rightSensor;
+  std::shared_ptr<DriveCurve> driveCurve;
 };
 } // namespace okapi

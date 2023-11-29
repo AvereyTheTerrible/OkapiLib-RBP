@@ -7,6 +7,7 @@
 
 #include "okapi/api/chassis/model/readOnlyChassisModel.hpp"
 #include "okapi/api/device/motor/abstractMotor.hpp"
+#include "okapi/api/chassis/util/opcontrol/driveCurve.hpp"
 #include <array>
 #include <initializer_list>
 #include <memory>
@@ -70,18 +71,28 @@ class ChassisModel : public ReadOnlyChassisModel {
    *
    * @param ileftSpeed left side speed
    * @param irightSpeed right side speed
+   * @param icurveGain gain of stick curve
    * @param ithreshold deadband on joystick values
    */
-  virtual void tank(double ileftSpeed, double irightSpeed, double ithreshold = 0) = 0;
+  virtual void tank(double ileftSpeed,
+                    double irightSpeed,
+                    double icurveGain = 0,
+                    double ithreshold = 0) = 0;
 
   /**
    * Drive the robot with an arcade drive layout. Uses voltage mode.
    *
    * @param iforwardSpeed speed forward direction
    * @param iyaw speed around the vertical axis
+   * @param iforwardCurveGain forward stick curve
+   * @param icurveGainYaw turning stick curve
    * @param ithreshold deadband on joystick values
    */
-  virtual void arcade(double iforwardSpeed, double iyaw, double ithreshold = 0) = 0;
+  virtual void arcade(double iforwardSpeed,
+                      double iyaw,
+                      double iforwardCurveGain = 0,
+                      double icurveGainYaw = 3.0,
+                      double ithreshold = 0) = 0;
 
   /**
    * Drive the robot with a curvature drive layout. The robot drives in constant radius turns
@@ -93,7 +104,11 @@ class ChassisModel : public ReadOnlyChassisModel {
    * @param icurvature curvature (inverse of radius) to drive in
    * @param ithreshold deadband on joystick values
    */
-  virtual void curvature(double iforwardSpeed, double icurvature, double ithreshold = 0) = 0;
+  virtual void curvature(double iforwardSpeed,
+                         double icurvature,
+                         double iforwardCurveGain = 0,
+                         double icurvatureCurveGain = 0,
+                         double ithreshold = 0) = 0;
 
   /**
    * Power the left side motors. Uses velocity mode.
