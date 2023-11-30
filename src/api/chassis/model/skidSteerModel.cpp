@@ -13,6 +13,7 @@ SkidSteerModel::SkidSteerModel(std::shared_ptr<AbstractMotor> ileftSideMotor,
                                std::shared_ptr<AbstractMotor> irightSideMotor,
                                std::shared_ptr<ContinuousRotarySensor> ileftEnc,
                                std::shared_ptr<ContinuousRotarySensor> irightEnc,
+							   std::shared_ptr<DriveCurve> idriveCurve,
                                const double imaxVelocity,
                                const double imaxVoltage)
   : maxVelocity(imaxVelocity),
@@ -20,7 +21,8 @@ SkidSteerModel::SkidSteerModel(std::shared_ptr<AbstractMotor> ileftSideMotor,
     leftSideMotor(std::move(ileftSideMotor)),
     rightSideMotor(std::move(irightSideMotor)),
     leftSensor(std::move(ileftEnc)),
-    rightSensor(std::move(irightEnc)) {
+    rightSensor(std::move(irightEnc)),
+	driveCurve(std::move(idriveCurve)){
 }
 
 void SkidSteerModel::forward(const double ispeed) {
@@ -78,15 +80,16 @@ void SkidSteerModel::stop() {
 
 void SkidSteerModel::tank(const double ileftSpeed,
                           const double irightSpeed,
+						  const bool iopcontrol,
                           const double ithreshold) {
   // This code is taken from WPIlib. All credit goes to them. Link:
   // https://github.com/wpilibsuite/allwpilib/blob/96e9a6989ce1688f3edb2d9b9d21ef8cd3861579/wpilibc/src/main/native/cpp/Drive/DifferentialDrive.cpp#L198
-  double leftSpeed = std::clamp(ileftSpeed, -1.0, 1.0);
+  double leftSpeed = driveCurve->calculate(std::clamp(ileftSpeed, -1.0, 1.0));
   if (std::abs(leftSpeed) < ithreshold) {
     leftSpeed = 0;
   }
 
-  double rightSpeed = std::clamp(irightSpeed, -1.0, 1.0);
+  double rightSpeed = driveCurve->calculate(std::clamp(irightSpeed, -1.0, 1.0));
   if (std::abs(rightSpeed) < ithreshold) {
     rightSpeed = 0;
   }
@@ -97,6 +100,7 @@ void SkidSteerModel::tank(const double ileftSpeed,
 
 void SkidSteerModel::arcade(const double iforwardSpeed,
                             const double iyaw,
+							const bool iopcontrol,
                             const double ithreshold) {
   // This code is taken from WPIlib. All credit goes to them. Link:
   // https://github.com/wpilibsuite/allwpilib/blob/96e9a6989ce1688f3edb2d9b9d21ef8cd3861579/wpilibc/src/main/native/cpp/Drive/DifferentialDrive.cpp#L48
@@ -139,6 +143,7 @@ void SkidSteerModel::arcade(const double iforwardSpeed,
 
 void SkidSteerModel::curvature(const double iforwardSpeed,
                                const double icurvature,
+							   const bool iopcontrol,
                                const double ithreshold) {
   // This code is adapted from WPIlib. All credit goes to them. Link:
   // https://github.com/wpilibsuite/allwpilib/blob/96e9a6989ce1688f3edb2d9b9d21ef8cd3861579/wpilibc/src/main/native/cpp/Drive/DifferentialDrive.cpp#L117

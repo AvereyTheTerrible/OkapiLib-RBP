@@ -470,39 +470,12 @@ class ChassisControllerBuilder {
 
   enum class DriveMode { SkidSteer, XDrive, HDrive };
 
-  struct TankDriveGains {
-	  double leftStickGain;
-	  double rightStickGain;
-  };
-
-  struct ArcadeDriveGains {
-	  double forwardStickGain;
-	  double yawStickGain;
-  };
-
-  struct CurvatureDriveGains {
-	  double forwardStickGain;
-	  double curvatureStickGain;
-  };
-
-  enum class DriveCurveLayout {
-	  TankDriveGains,
-	  ArcadeDriveGains,
-	  CurvatureDriveGains
-  };
-
   bool hasMotors{false}; // Used to verify motors were passed
   DriveMode driveMode{DriveMode::SkidSteer};
   SkidSteerMotors skidSteerMotors;
   XDriveMotors xDriveMotors;
   HDriveMotors hDriveMotors;
-
-  bool hasCurveGains{false}; // Used to verify curve gains were passed
-  DriveCurveLayout curveLayout{DriveCurveLayout::TankDriveGains};
-  TankDriveGains tankDriveGains;
-  ArcadeDriveGains arcadeDriveGains;
-  CurvatureDriveGains curvatureDriveGains;
-
+  
   bool sensorsSetByUser{false}; // Used so motors don't overwrite sensors set manually
   std::shared_ptr<ContinuousRotarySensor> leftSensor{nullptr};
   std::shared_ptr<ContinuousRotarySensor> rightSensor{nullptr};

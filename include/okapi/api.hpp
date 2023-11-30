@@ -46,6 +46,8 @@
 #include "okapi/api/chassis/model/threeEncoderSkidSteerModel.hpp"
 #include "okapi/api/chassis/model/threeEncoderXDriveModel.hpp"
 #include "okapi/api/chassis/model/xDriveModel.hpp"
+#include "okapi/api/chassis/util/opcontrol/driveCurve.hpp"
+#include "okapi/api/chassis/util/opcontrol/expoCurve.hpp"
 #include "okapi/impl/chassis/controller/chassisControllerBuilder.hpp"
 
 #include "okapi/api/control/async/asyncLinearMotionProfileController.hpp"

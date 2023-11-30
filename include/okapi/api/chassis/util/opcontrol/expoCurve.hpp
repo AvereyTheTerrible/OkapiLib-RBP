@@ -18,22 +18,22 @@ namespace okapi
 		 * (red graph is E-Bots Pilons)
 		 * @param igain
 		 */
-		explicit ExpoCurve(double igain);
+		explicit ExpoCurve(const double igain);
 		/**
 		 * @param igain New curve gain
 		 */
-		void setGain(double igain) override;
+		void setGain(const double igain) override;
 
 		/**
 		 * @return The current curve gain
 		 */
-		double getGain() override;
+		double getGain() const override;
 
 		/**
 		 * @param iinput Uncurved stick input
 		 * @return Curved stick output based on the curve
 		 * function
 		 */
-		double calculate(double iinput) override;
+		double calculate(const double iinput) override;
 	};
 } // namespace okapi

@@ -7,7 +7,6 @@
 
 #include "okapi/api/chassis/model/readOnlyChassisModel.hpp"
 #include "okapi/api/device/motor/abstractMotor.hpp"
-#include "okapi/api/chassis/util/opcontrol/driveCurve.hpp"
 #include <array>
 #include <initializer_list>
 #include <memory>
@@ -76,7 +75,6 @@ class ChassisModel : public ReadOnlyChassisModel {
    */
   virtual void tank(double ileftSpeed,
                     double irightSpeed,
-                    double icurveGain = 0,
                     double ithreshold = 0) = 0;
 
   /**
@@ -84,14 +82,10 @@ class ChassisModel : public ReadOnlyChassisModel {
    *
    * @param iforwardSpeed speed forward direction
    * @param iyaw speed around the vertical axis
-   * @param iforwardCurveGain forward stick curve
-   * @param icurveGainYaw turning stick curve
    * @param ithreshold deadband on joystick values
    */
   virtual void arcade(double iforwardSpeed,
                       double iyaw,
-                      double iforwardCurveGain = 0,
-                      double icurveGainYaw = 3.0,
                       double ithreshold = 0) = 0;
 
   /**
@@ -106,8 +100,6 @@ class ChassisModel : public ReadOnlyChassisModel {
    */
   virtual void curvature(double iforwardSpeed,
                          double icurvature,
-                         double iforwardCurveGain = 0,
-                         double icurvatureCurveGain = 0,
                          double ithreshold = 0) = 0;
 
   /**

@@ -25,7 +25,6 @@ class SkidSteerModel : public ChassisModel {
                  std::shared_ptr<AbstractMotor> irightSideMotor,
                  std::shared_ptr<ContinuousRotarySensor> ileftEnc,
                  std::shared_ptr<ContinuousRotarySensor> irightEnc,
-				 std::shared_ptr<DriveCurve> idriveCurve,
                  double imaxVelocity,
                  double imaxVoltage);
 
@@ -79,7 +78,6 @@ class SkidSteerModel : public ChassisModel {
    */
   void tank(double ileftSpeed,
             double irightSpeed,
-            double icurveGain = 0,
             double ithreshold = 0) override;
 
   /**
@@ -91,8 +89,6 @@ class SkidSteerModel : public ChassisModel {
    */
   void arcade(double iforwardSpeed,
               double iyaw,
-              double iforwardCurveGain = 0,
-              double icurveGainYaw = 3.0,
               double ithreshold = 0) override;
 
   /**
@@ -103,12 +99,12 @@ class SkidSteerModel : public ChassisModel {
    *
    * @param iforwardSpeed speed in the forward direction
    * @param icurvature curvature (inverse of radius) to drive in
+   * @param iopcontrol whether chassis is user controlled
    * @param ithreshold deadband on joystick values
    */
   virtual void curvature(double iforwardSpeed,
                          double icurvature,
-                         double iforwardCurveGain = 0,
-                         double icurvatureCurveGain = 0,
+						 bool iopcontrol=false,
                          double ithreshold = 0) override;
 
   /**
@@ -206,6 +202,5 @@ class SkidSteerModel : public ChassisModel {
   std::shared_ptr<AbstractMotor> rightSideMotor;
   std::shared_ptr<ContinuousRotarySensor> leftSensor;
   std::shared_ptr<ContinuousRotarySensor> rightSensor;
-  std::shared_ptr<DriveCurve> driveCurve;
 };
 } // namespace okapi
